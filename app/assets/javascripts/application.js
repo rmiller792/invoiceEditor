@@ -18,4 +18,6 @@
 //= require bootstrap-sprockets
 //= require bootstrap-editable
 //= require bootstrap-editable-rails
+//= require angular
+//= require angular-route
 //= require_tree .
