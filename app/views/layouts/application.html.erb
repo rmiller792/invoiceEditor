@@ -1,15 +1,29 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>InvoiceEditor</title>
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+<html ng-app="rails">
+<head>
+  <title>InvoiceEditor</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-  </head>
 
-  <body>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+</head>
+
+<body>
+
+  <!-- incluimos la navegación -->
+   <div class="">
+  <div ng-include="'views/nav.html'"></div>
+</div>
+
+  <!-- directiva ng-view -->
+  <div class="container">
+  <div class="site-container row" ng-view>
     <%= yield %>
-  </body>
+  </div>
+    
+  </div>
+</body>
 </html>

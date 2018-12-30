@@ -1,0 +1,29 @@
+
+<a class="nav-link btn btn-primary" href="/#!/">new</a>
+
+<div class="col-sm-12">
+    <h1 class="text-center">Invoices</h1>
+</div>
+
+<table align="center" class="table" >
+    <thead>
+        <tr>
+            <th width="100">Id</th>
+            <th width="200">Total</th>
+            <th width="200">Date</th>
+            <th width="200">option</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="i in invoices">
+            <td>{{ i.id }}</td>
+            <td>{{ i.total }}</td>
+            <td>{{ i.created_at | date:'dd/MM/yyyy' }}</td>
+            <td>
+                <button type="button" class="btn btn-primary" aria-label="Left Align" ng-click="editItem(i)">
+                    <i class="fas fa-edit"></i>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>

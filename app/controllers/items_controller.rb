@@ -1,5 +1,5 @@
 class ItemsController < ApplicationController
-  before_action :set_item, only: [:show, :edit, :update, :destroy]
+  # before_action :set_item, only: [:show, :edit, :update, :destroy]
 
   # GET /items
   # GET /items.json
@@ -61,6 +61,21 @@ class ItemsController < ApplicationController
     end
   end
 
+
+  def getAll
+    @items = Item.all
+    items = []
+    @items.each do |i|
+      item = {}
+      item['id'] = i.id
+      item['name'] = i.name
+      item['price'] = i.price
+      item['qty'] = 1
+      items.push(item)
+    end
+    render json: items
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_item
@@ -71,4 +86,4 @@ class ItemsController < ApplicationController
     def item_params
       params.require(:item).permit(:name, :price)
     end
-end
+  end

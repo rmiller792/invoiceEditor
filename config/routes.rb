@@ -1,5 +1,14 @@
 Rails.application.routes.draw do
-  resources :items
-  resources :invoices
+
+	get 'welcome/index'
+
+	root 'welcome#index'
+
+
+	get 'invoices/getInvoices', to: 'invoices#getAll'
+	get 'invoices/create', to: 'invoices#create'
+	get 'items/getAll', to: 'items#getAll'
+
+
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

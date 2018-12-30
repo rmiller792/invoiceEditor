@@ -1,5 +1,5 @@
 class InvoicesController < ApplicationController
-  before_action :set_invoice, only: [:show, :edit, :update, :destroy]
+  # before_action :set_invoice, only: [:show, :edit, :update, :destroy]
 
   # GET /invoices
   # GET /invoices.json
@@ -59,6 +59,12 @@ class InvoicesController < ApplicationController
       format.html { redirect_to invoices_url, notice: 'Invoice was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+    def getAll
+     @invoices = Invoice.all
+     render json: @invoices
+     
   end
 
   private
