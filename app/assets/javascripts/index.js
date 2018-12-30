@@ -21,6 +21,11 @@ angular.module("rails", ["ngRoute"])
 
     $scope.details = [];
     $scope.itemSelected = {};
+    $scope.subTotal = 0;
+    $scope.total = 0;
+    $scope.tax = 0;
+        var tax = 0.05;
+
 
     var onError = function(data){
 
@@ -31,6 +36,10 @@ angular.module("rails", ["ngRoute"])
 
     var onItemsLoaded = function(data){
         $scope.items = data;
+    };
+
+    var onSave = function(data){
+        alert("yeii")
     };
 
     services.getInvoices(onInvoicesLoaded, onError);
@@ -61,27 +70,71 @@ angular.module("rails", ["ngRoute"])
 }
 
 
+$scope.calculateRow = function(item){
+    item.total = item.price * item.qty;
+    calculateTotal();
+
+}
+
+ var calculateTotal = function(){
+    $scope.subTotal = 0;
+    $scope.total = 0;
+
+    var found = false;
+    if ($scope.details.length == 0) {
+        $scope.subTotal = 0;
+        $scope.total = 0;
+        $scope.tax = 0;
+    }else{
+        for (var i = 0; i < $scope.details.length; i++) {
+            $scope.subTotal +=  $scope.details[i].total;
+
+        }
+       $scope.tax = $scope.subTotal * tax;
+       $scope.total = $scope.subTotal + $scope.tax;
+    }
+
+}
 
 $scope.addItem = function(item){
  var found = false;
  if ($scope.details.length == 0) {
+    item.total = item.price;
     $scope.details.push(item);
 }else{
     for (var i = 0; i < $scope.details.length; i++) {
         if ($scope.details[i].id == item.id){
             $scope.details[i].qty ++;
+            $scope.details[i].total = $scope.details[i].qty * $scope.details[i].price;
             found = true;
 
         }
     }
     if (!found) {
+        item.total = item.price;
+
         $scope.details.push(item);
     }
+
+}
+    calculateTotal();
+
+
+}
+
+$scope.save = function(){
+      var parametros = {
+    details: $scope.details,
+    subTotal: $scope.subTotal,
+    tax: $scope.tax,
+    total: $scope.total,
+  }
+  services.saveInvoice(parametros, onSave, onError);
+
 }
 
 
-}
-
+// end controller indexCtrl
 })
 
 
@@ -142,6 +195,28 @@ $scope.addItem = function(item){
  alert(error.data);
 })
 };
+
+this.saveInvoice = function(params, callback, onError){
+  var fullUrl = baseUrl+'invoices/save';
+  var asJson = angular.toJson(params);
+  console.log(asJson);
+  var req = {
+    method: 'POST',
+    url: fullUrl,
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    data: asJson
+  };
+    $http(req).then(function(response) 
+  {
+    callback(response.data);
+}, function(error)
+{
+ alert(error.data);
+})
+};
+
 
 
 });

@@ -69,7 +69,7 @@ class ItemsController < ApplicationController
       item = {}
       item['id'] = i.id
       item['name'] = i.name
-      item['price'] = i.price
+      item['price'] = i.price.to_f
       item['qty'] = 1
       items.push(item)
     end

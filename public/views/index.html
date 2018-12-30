@@ -14,34 +14,59 @@
   <div class="">
     <div id="table" class="">
       <span  data-toggle="modal" data-target="#exampleModal" ng-click="openModal()" class="table-add float-right mb-3 mr-2"><a  class="text-success"><i class="fas fa-plus fa-2x" aria-hidden="true"></i></a></span>
-        <table class="table table-bordered table-responsive-md table-striped text-center">
-            <thead>
-                <tr>
-                    <th width="100">Id</th>
-                    <th width="200">Qty</th>
-                    <th width="200">Item</th>
-                </tr>
-            </thead>
-            <tbody>
-
-                <tr ng-repeat="d in details" >
-                    <td>{{ d.id }}</td>
-                    <td>{{ d.qty }}</td>
-                    <td>{{ d.name }}</td>
-                    <td>
-                        <span class="table-remove"><button type="button" class="btn btn-danger btn-rounded btn-sm my-0" ng-click="removeItem(d)">Remove</button></span>
-                    </td>
+      <table class="table table-bordered table-responsive-md table-striped text-center">
+        <thead>
+            <tr>
+                <th width="100">Id</th>
+                <th width="200">Qty</th>
+                <th width="200">Price</th>
+                <th width="200">Item</th>
+                <th width="200">Total</th>
             </tr>
-                </tbody>
+        </thead>
+        <tbody>
+
+            <tr ng-repeat="d in details" >
+                <td contenteditable="true">{{ d.id }}</td>
+                <td><input type="number" min="1" ng-model="d.qty" ng-change="calculateRow(d)"/></td>
+                <td><input type="number" min="1" ng-model="d.price" ng-change="calculateRow(d)"/></td>
+                <td contenteditable="true">{{ d.name }}</td>
+                <td contenteditable="true">{{ d.total }}</td>
+                <td>
+                    <span class="table-remove"><button type="button" class="btn btn-danger btn-rounded btn-sm my-0" ng-click="removeItem(d)">Remove</button></span>
+                </td>
+            </tr>
+        </tbody>
 
 
 
 
-        </table>
-    </div>
+    </table>
+
+
+</div>
 </div>
 </div>
 <!-- Editable table -->
+    <div class="col-sm-12 pull-right">
+        <table class="pull-right col-sm-4 offset-sm-6">
+            <tr>
+                <td>subTotal</td>
+                <td>{{ subTotal | currency}}</td>
+            </tr>            
+            <tr>
+                <td>tax(5%)</td>
+                <td>{{ tax | currency}}</td>
+            </tr>          
+            <tr>
+                <td>Total</td>
+                <td>{{ total | currency}}</td>
+            </tr>
+        </table>
+
+    </div>
+    <button type="button" class="btn btn-secondary" ng-click="save()">Finished</button>
+
 
 
 <!-- Modal -->
@@ -55,26 +80,26 @@
       </button>
   </div>
   <div class="modal-body">
-   <table align="center" class="table" >
-    <thead>
-        <tr>
-            <th width="200">Item</th>
-            <th width="200">Price</th>
-        </tr>
-    </thead>
-    <tbody>
+     <table align="center" class="table" >
+        <thead>
+            <tr>
+                <th width="200">Item</th>
+                <th width="200">Price</th>
+            </tr>
+        </thead>
+        <tbody>
 
-        <tr ng-repeat="i in items" ng-click="itemSelected(i)">
-            <td>{{ i.name }}</td>
-            <td>{{ i.price }}</td>
-            <td>
-                <button type="button" class="btn btn-primary" aria-label="Left Align" ng-click="addItem(i)">
-                    <i class="fas fa-check"></i>
-                </button>
-            </td>
-        </tr>
-    </tbody>
-</table>
+            <tr ng-repeat="i in items" ng-click="itemSelected(i)">
+                <td>{{ i.name }}</td>
+                <td>{{ i.price }}</td>
+                <td>
+                    <button type="button" class="btn btn-primary" aria-label="Left Align" ng-click="addItem(i)">
+                        <i class="fas fa-check"></i>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
