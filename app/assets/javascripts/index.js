@@ -54,7 +54,7 @@ angular.module("rails", ["ngRoute"])
       if ($scope.details.length > 0) {
          for (var i = 0; i < $scope.details.length; i++) 
          {
-            if ($scope.details[i].itemId == item.id)
+            if ($scope.details[i].itemId == item.itemId)
             {
              $scope.details.splice(i, 1);
 
@@ -62,6 +62,7 @@ angular.module("rails", ["ngRoute"])
 
      }
  }
+ calculateTotal();
 }
 
 

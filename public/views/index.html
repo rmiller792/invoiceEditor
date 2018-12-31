@@ -27,11 +27,16 @@
 
             <tr ng-repeat="d in details" >
                 <td contenteditable="true">{{ d.name }}</td>
-                <td><input type="number" min="1" ng-model="d.qty" ng-change="calculateRow(d)"/></td>
-                <td><input type="number" min="1" ng-model="d.price" ng-change="calculateRow(d)"/></td>
-                <td contenteditable="true">{{ d.total }}</td>
+                <td><input type="number" min="1" class="form-control" ng-model="d.qty" ng-change="calculateRow(d)"/></td>
                 <td>
-                    <span class="table-remove"><button type="button" class="btn btn-danger btn-rounded btn-sm my-0" ng-click="removeItem(d)">Remove</button></span>
+<div class="input-group">
+      <div class="input-group-addon" style="font-size: 25px;">$</div>
+      <input type="number" class="form-control currency" min="1" ng-model="d.price"  step='0.01' data-number-to-fixed="2" ng-change="calculateRow(d)"/>
+  </td>
+    </div>
+                <td contenteditable="true">{{ d.total | currency}}</td>
+                <td>
+                    <span class="table-remove"><button type="button" class="btn btn-danger btn-rounded btn-sm my-0" ng-click="removeItem(d)">X</button></span>
                 </td>
             </tr>
         </tbody>
@@ -89,7 +94,7 @@
 
             <tr ng-repeat="i in items" ng-click="itemSelected(i)">
                 <td>{{ i.name }}</td>
-                <td>{{ i.price }}</td>
+                <td>{{ i.price | currency}}</td>
                 <td>
                     <button type="button" class="btn btn-primary" aria-label="Left Align" ng-click="addItem(i)">
                         <i class="fas fa-check"></i>
