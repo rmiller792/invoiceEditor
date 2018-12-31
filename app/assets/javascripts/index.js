@@ -1,4 +1,4 @@
-angular.module("rails", ["ngRoute"])
+angular.module("rails", ["ngRoute","ngDialog"])
 
 
 .config(function($routeProvider)
@@ -14,7 +14,7 @@ angular.module("rails", ["ngRoute"])
     .otherwise({ reditrectTo : "/" });
 })
 
-.controller("indexCtrl", function($scope, services)
+.controller("indexCtrl", function($scope, services, ngDialog)
 {
 
     $scope.items=[];
@@ -24,7 +24,7 @@ angular.module("rails", ["ngRoute"])
     $scope.total = 0;
     $scope.tax = 0;
         var tax = 0.05;
-
+var dialog;
 
     var onError = function(data){
 
@@ -38,7 +38,7 @@ angular.module("rails", ["ngRoute"])
     };
 
     var onSave = function(data){
-        alert("yeii")
+        dialog.close();
     };
 
     services.getInvoices(onInvoicesLoaded, onError);
@@ -119,12 +119,23 @@ $scope.addItem = function(item){
 }
 
 $scope.save = function(){
+    if ($scope.details == null || $scope.details.length == 0) {
+  swal("Error", "Add Item Please", "error");
+
+    }
       var parametros = {
     details: $scope.details,
     subTotal: $scope.subTotal,
     tax: $scope.tax,
     total: $scope.total,
   }
+    dialog = ngDialog.open({
+    template: '<div class="loading">Waiting... <img src="../images/loader.gif"></div>',
+    plain: true,
+    showClose: false,
+    closeByEscape: false,
+    closeByDocument: false
+  });
   services.saveInvoice(parametros, onSave, onError);
 
 }

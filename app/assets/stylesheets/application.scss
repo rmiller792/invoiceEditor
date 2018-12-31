@@ -11,10 +11,26 @@
  * It is generally better to create a new file per style scope.
  *
 *= require bootstrap.min.css
+*= require ngDialog.min.css
 @import "bootstrap-sprockets";
 @import "bootstrap";
+@import "ngDialog.min.css";
  */
 input.currency {
     text-align: right;
     padding-right: 15px;
+}
+
+.loading{
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  background-color: white;
+  width: 256px;
+  height: 10%;
+  font-weight: bolder;
+  text-align: center;
+  vertical-align: center;
+  font-size: x-large;
+  transform: translate(-50%, -50%);
 }

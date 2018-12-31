@@ -29,46 +29,46 @@
                 <td contenteditable="true">{{ d.name }}</td>
                 <td><input type="number" min="1" class="form-control" ng-model="d.qty" ng-change="calculateRow(d)"/></td>
                 <td>
-<div class="input-group">
-      <div class="input-group-addon" style="font-size: 25px;">$</div>
-      <input type="number" class="form-control currency" min="1" ng-model="d.price"  step='0.01' data-number-to-fixed="2" ng-change="calculateRow(d)"/>
-  </td>
-    </div>
-                <td contenteditable="true">{{ d.total | currency}}</td>
-                <td>
-                    <span class="table-remove"><button type="button" class="btn btn-danger btn-rounded btn-sm my-0" ng-click="removeItem(d)">X</button></span>
-                </td>
-            </tr>
-        </tbody>
+                    <div class="input-group">
+                      <div class="input-group-addon" style="font-size: 25px;">$</div>
+                      <input type="number" class="form-control currency" min="1" ng-model="d.price"  step='0.01' data-number-to-fixed="2" ng-change="calculateRow(d)"/>
+                  </td>
+              </div>
+              <td contenteditable="true">{{ d.total | currency}}</td>
+              <td>
+                <span class="table-remove"><button type="button" class="btn btn-danger btn-rounded btn-sm my-0" ng-click="removeItem(d)">X</button></span>
+            </td>
+        </tr>
+    </tbody>
 
 
 
 
-    </table>
+</table>
 
 
 </div>
 </div>
 </div>
 <!-- Editable table -->
-    <div class="col-sm-12 pull-right">
-        <table class="pull-right col-sm-4 offset-sm-6">
-            <tr>
-                <td>subTotal</td>
-                <td>{{ subTotal | currency}}</td>
-            </tr>            
-            <tr>
-                <td>tax(5%)</td>
-                <td>{{ tax | currency}}</td>
-            </tr>          
-            <tr>
-                <td>Total</td>
-                <td>{{ total | currency}}</td>
-            </tr>
-        </table>
+<div class="col-sm-12 pull-right">
+    <table class="pull-right col-sm-4 offset-sm-6">
+        <tr>
+            <td>subTotal</td>
+            <td>{{ subTotal | currency}}</td>
+        </tr>            
+        <tr>
+            <td>tax(5%)</td>
+            <td>{{ tax | currency}}</td>
+        </tr>          
+        <tr>
+            <td>Total</td>
+            <td>{{ total | currency}}</td>
+        </tr>
+    </table>
 
-    </div>
-    <button type="button" class="btn btn-secondary" ng-click="save()">Finished</button>
+</div>
+<button type="button" class="btn btn-secondary" ng-click="save()" ng-disabled="details.length == 0 || details == null">Finished</button>
 
 
 
@@ -83,26 +83,26 @@
       </button>
   </div>
   <div class="modal-body">
-     <table align="center" class="table" >
-        <thead>
-            <tr>
-                <th width="200">Item</th>
-                <th width="200">Price</th>
-            </tr>
-        </thead>
-        <tbody>
+   <table align="center" class="table" >
+    <thead>
+        <tr>
+            <th width="200">Item</th>
+            <th width="200">Price</th>
+        </tr>
+    </thead>
+    <tbody>
 
-            <tr ng-repeat="i in items" ng-click="itemSelected(i)">
-                <td>{{ i.name }}</td>
-                <td>{{ i.price | currency}}</td>
-                <td>
-                    <button type="button" class="btn btn-primary" aria-label="Left Align" ng-click="addItem(i)">
-                        <i class="fas fa-check"></i>
-                    </button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+        <tr ng-repeat="i in items" ng-click="itemSelected(i)">
+            <td>{{ i.name }}</td>
+            <td>{{ i.price | currency}}</td>
+            <td>
+                <button type="button" class="btn btn-primary" aria-label="Left Align" ng-click="addItem(i)">
+                    <i class="fas fa-check"></i>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

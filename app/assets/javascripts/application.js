@@ -20,4 +20,5 @@
 //= require bootstrap-editable-rails
 //= require angular
 //= require angular-route
+//= require ngDialog.min.js
 //= require_tree .
