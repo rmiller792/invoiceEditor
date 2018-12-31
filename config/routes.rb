@@ -11,6 +11,9 @@ Rails.application.routes.draw do
 	get 'invoices/print/:id', to: 'invoices#print'
 	post 'invoices/save', to: 'invoices#create'
 	post 'invoices/delete', to: 'invoices#destroy'
+	get 'invoices/getInvoice', to: 'invoices#getInvoice'
+
+	post 'items/save', to: 'items#create'
 
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

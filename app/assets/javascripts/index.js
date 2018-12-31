@@ -15,10 +15,19 @@ angular.module("rails", ["ngRoute","ngDialog"])
         templateUrl : "views/index.html",
         controller : "indexCtrl"
     })
+    .when("/index/:id", {
+        templateUrl : "views/index.html",
+        controller : "indexCtrl"
+    })
+    .when("/items", {
+        templateUrl : "views/items.html",
+        controller : "itemsCtrl"
+    })
+
     .otherwise({ reditrectTo : "/" });
 })
 
-.controller("indexCtrl", function($scope, services, ngDialog, $window)
+.controller("indexCtrl", function($scope, services, ngDialog, $window, $routeParams)
 {
 
     $scope.items=[];
@@ -58,6 +67,7 @@ angular.module("rails", ["ngRoute","ngDialog"])
 
                  window.open("invoices/print/"+
                     data.invoice.id+".pdf",'_blank');
+                 $scope.invoice_id = data.invoice.id;
 
              } 
          });  
@@ -152,19 +162,33 @@ $scope.save = function(){
 
   }
   var parametros = {
+    id: $scope.invoice_id,
     details: $scope.details,
     subtotal: $scope.subtotal,
     tax: $scope.tax,
     total: $scope.total,
 }
-// dialog = ngDialog.open({
-//     template: '<div class="loading">Waiting... <img src="../images/loader.gif"></div>',
-//     plain: true,
-//     showClose: false,
-//     closeByEscape: false,
-//     closeByDocument: false
-// });
+
 services.saveInvoice(parametros, onSave, onError);
+
+}
+
+var onInvoice = function(data){
+    $scope.details = data.details;
+    $scope.subtotal = data.invoice.subtotal;
+    $scope.tax = data.invoice.tax;
+    $scope.total = data.invoice.total;
+}
+$scope.invoice_id = 0;
+var invoice_id = $routeParams.id;
+if(invoice_id){
+    $scope.invoice_id = invoice_id;
+    params = {
+        id:invoice_id
+    }
+    services.getInvoice(params, onInvoice, onError);
+}else{
+    $scope.invoice_id = 0;
 
 }
 
@@ -173,8 +197,11 @@ services.saveInvoice(parametros, onSave, onError);
 })
 
 
-.controller("homeCtrl", function($scope,services)
+.controller("homeCtrl", function($scope,services, $window)
 {
+
+
+
     var onInvoicesLoaded = function(data){
         $scope.invoices = data;
     };
@@ -194,9 +221,15 @@ services.saveInvoice(parametros, onSave, onError);
     var onError = function(data){
 
     };
-    $scope.editItem = function(invoice){
-        alert(invoice.id);
-    }
+
+    $scope.editInvoice = function(invoice){
+
+        $window.location.href= "#!/index/"+invoice.id;
+    };
+    $scope.viewPDF = function(id){
+
+        $window.location.href= "invoices/print/"+id+".pdf";
+    };
     $scope.deleteInvoice = function(invoice){
         params = {
             id: invoice.id
@@ -206,6 +239,64 @@ services.saveInvoice(parametros, onSave, onError);
 
 
     services.getInvoices(onInvoicesLoaded, onError);
+
+})
+
+
+.controller("itemsCtrl", function($scope,services, $window)
+{
+
+  $scope.id = 0;
+  $scope.name = "";
+  $scope.price = 1;
+
+  var onItemsLoaded = function(data){
+    $scope.items = data;
+};
+
+var onSaveItem = function(data){
+    if (data.success) {
+        swal("Success", "Was Successfully Added!", "success");
+
+        services.getItems(onItemsLoaded, onError);
+        $('#exampleModal').modal('hide');
+
+    }else{
+        swal("Error", "Error on Add Item", "error");
+
+    }
+
+};    
+var onError = function(data){
+
+};
+
+$scope.newItem = function(){
+  $scope.id = 0;
+  $scope.name = "";
+  $scope.price = 1;
+};
+
+$scope.editItem = function(item){
+        $('#exampleModal').modal('show');
+
+      $scope.id = item.itemId;
+  $scope.name = item.name;
+  $scope.price = item.price;
+
+};
+  
+$scope.saveItem = function(){
+    params = {
+        id: $scope.id,
+        name: $scope.name,
+        price: $scope.price
+    }
+    services.saveItem(params,onSaveItem, onError);
+}
+
+
+services.getItems(onItemsLoaded, onError);
 
 })
 
@@ -269,6 +360,26 @@ $http(req).then(function(response)
    alert(error.data);
 })
 };
+this.saveItem = function(params, callback, onError){
+  var fullUrl = 'items/save';
+  var asJson = angular.toJson(params);
+  console.log(asJson);
+  var req = {
+    method: 'POST',
+    url: fullUrl,
+    headers: {
+      'Content-Type': 'application/json'
+  },
+  data: asJson
+};
+$http(req).then(function(response) 
+{
+    callback(response.data);
+}, function(error)
+{
+   alert(error.data);
+})
+};
 
 this.deleteInvoice = function(params, callback, onError){
   var fullUrl = 'invoices/delete';
@@ -291,6 +402,28 @@ $http(req).then(function(response)
 })
 };
 
+
+this.getInvoice = function(params, callback, onError){
+  var fullUrl = 'invoices/getInvoice';
+      //var asJson = angular.toJson(params);
+      //console.log(asJson);
+      var req = {
+        method: 'GET',
+        url: fullUrl,
+        headers: {
+          'Content-Type': 'application/json'
+      },
+      params: params
+  };
+
+  $http(req).then(function(response) 
+  {
+    callback(response.data);
+}, function(error)
+{
+   alert(error.data);
+})
+};
 
 
 });

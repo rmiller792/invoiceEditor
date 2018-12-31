@@ -32,8 +32,8 @@
                     <div class="input-group">
                       <div class="input-group-addon" style="font-size: 25px;">$</div>
                       <input type="number" class="form-control currency" min="1" ng-model="d.price"  step='0.01' data-number-to-fixed="2" ng-change="calculateRow(d)"/>
+                  </div>
                   </td>
-              </div>
               <td contenteditable="true">{{ d.total | currency}}</td>
               <td>
                 <span class="table-remove"><button type="button" class="btn btn-danger btn-rounded btn-sm my-0" ng-click="removeItem(d)">X</button></span>

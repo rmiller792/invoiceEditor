@@ -1,0 +1,70 @@
+
+<a class="nav-link btn btn-primary" data-target="#exampleModal" data-toggle="modal"  ng-click="newItem()">new</a>
+
+<div class="col-sm-12">
+    <h1 class="text-center">Items</h1>
+</div>
+
+<table align="center" class="table" >
+    <thead>
+        <tr>
+            <th width="200">Name</th>
+            <th width="200">Price</th>
+            <th width="200">option</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="i in items">
+            <td>{{ i.name }}</td>
+            <td>{{ i.price }}</td>
+            <td>
+                <button type="button" class="btn btn-primary" aria-label="Left Align" ng-click="editItem(i)">
+                    <i class="fas fa-edit"></i>
+                </button>
+                
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Item</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+  <div class="modal-body">
+
+    <form name="form_item">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Name</label>
+        <input type="text" class="form-control" placeholder="name" ng-model="name" required>
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">Price</label>
+        <div class="input-group">
+          <div class="input-group-addon" style="font-size: 25px;">$</div>
+          <input type="number" class="form-control currency" min="1" ng-model="price"  step='0.01' data-number-to-fixed="2"  required />
+      </div>
+  </div>
+
+</form>
+
+
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-primary" ng-disabled="form_item.$invalid" ng-click="saveItem()">Submit</button>
+</div>
+</div>
+</div>
+</div>      

@@ -1,5 +1,5 @@
 class ItemsController < ApplicationController
-  # before_action :set_item, only: [:show, :edit, :update, :destroy]
+  skip_before_action :verify_authenticity_token, raise: false
 
   # GET /items
   # GET /items.json
@@ -24,16 +24,27 @@ class ItemsController < ApplicationController
   # POST /items
   # POST /items.json
   def create
-    @item = Item.new(item_params)
+    ActiveRecord::Base.transaction do
+      @id = item_edit_params[:id]
+      success = false
 
-    respond_to do |format|
-      if @item.save
-        format.html { redirect_to @item, notice: 'Item was successfully created.' }
-        format.json { render :show, status: :created, location: @item }
+      if @id > 0
+        @item = Item.new(item_edit_params)
+        @item_original = Item.find_by_id(@id) 
+        @item_original.name = @item.name
+        @item_original.price = @item.price
+        if @item_original.save
+          success = true
+        end
       else
-        format.html { render :new }
-        format.json { render json: @item.errors, status: :unprocessable_entity }
+        @item = Item.new(item_params)
+        if @item.save
+          success = true
+
+        end
       end
+      render json:{item: @item, success:success}
+
     end
   end
 
@@ -85,5 +96,8 @@ class ItemsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def item_params
       params.require(:item).permit(:name, :price)
+    end
+    def item_edit_params
+      params.require(:item).permit(:name, :price, :id)
     end
   end
