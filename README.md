@@ -32,6 +32,7 @@ Install the dependencies and devDependencies and start the server.
 $ gem install rails
 $ cd invoiceEditor
 $ bundle install
+$ rake db:drop db:create db:migrate
 $ rails serve
 ```
 
