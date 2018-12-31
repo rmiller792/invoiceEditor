@@ -88,3 +88,11 @@ $ rails serve
 | Edit | If exist, update data |
 | get items | get all items |
 
+
+
+### Unit Test PDF
+
+| Unit test | Description |
+| ------ | ------ |
+| show information | show data Invoice and details |
+| if no data found | generate pdf and show message |
