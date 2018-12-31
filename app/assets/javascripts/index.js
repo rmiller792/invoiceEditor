@@ -6,6 +6,10 @@ angular.module("rails", ["ngRoute","ngDialog"])
     $routeProvider.when("/", {
         templateUrl : "views/home.html",
         controller : "homeCtrl"
+    })    
+    $routeProvider.when("/home", {
+        templateUrl : "views/home.html",
+        controller : "homeCtrl"
     })
     .when("/index", {
         templateUrl : "views/index.html",
@@ -42,13 +46,13 @@ angular.module("rails", ["ngRoute","ngDialog"])
         if (data.invoice.id > 0) {
             swal({   
                 title: "Was Successfully Added!",   
-              type: "success",   
-              showCancelButton: true,   
-              confirmButtonColor: "#DD6B55",   
-              confirmButtonText: "PDF",
-              cancelButtonText: "Close",   
-              closeOnConfirm: true 
-          }).then((isConfirm) => {
+                type: "success",   
+                showCancelButton: true,   
+                confirmButtonColor: "#DD6B55",   
+                confirmButtonText: "PDF",
+                cancelButtonText: "Close",   
+                closeOnConfirm: true 
+            }).then((isConfirm) => {
               if (isConfirm) {
 
 
@@ -59,7 +63,7 @@ angular.module("rails", ["ngRoute","ngDialog"])
          });  
 
         }else{
-            swal("Error", "Ocurrió un error al guardar.", "error");
+            swal("Error", "an error occurred", "error");
         }
 
 
@@ -175,11 +179,29 @@ services.saveInvoice(parametros, onSave, onError);
         $scope.invoices = data;
     };
 
+    var onDelete = function(data){
+        if (data.success) {
+
+            swal("Success", "Deleted", "success");
+            services.getInvoices(onInvoicesLoaded, onError);
+
+        }else{
+            swal("Error", "Error on Delete invoice", "error");
+
+        }
+
+    };    
     var onError = function(data){
 
     };
     $scope.editItem = function(invoice){
         alert(invoice.id);
+    }
+    $scope.deleteInvoice = function(invoice){
+        params = {
+            id: invoice.id
+        }
+        services.deleteInvoice(params,onDelete, onError);
     }
 
 
@@ -229,6 +251,27 @@ services.saveInvoice(parametros, onSave, onError);
 
 this.saveInvoice = function(params, callback, onError){
   var fullUrl = 'invoices/save';
+  var asJson = angular.toJson(params);
+  console.log(asJson);
+  var req = {
+    method: 'POST',
+    url: fullUrl,
+    headers: {
+      'Content-Type': 'application/json'
+  },
+  data: asJson
+};
+$http(req).then(function(response) 
+{
+    callback(response.data);
+}, function(error)
+{
+   alert(error.data);
+})
+};
+
+this.deleteInvoice = function(params, callback, onError){
+  var fullUrl = 'invoices/delete';
   var asJson = angular.toJson(params);
   console.log(asJson);
   var req = {

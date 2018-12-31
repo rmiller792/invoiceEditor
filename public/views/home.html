@@ -1,5 +1,5 @@
 
-<a class="nav-link btn btn-primary" href="/#!/">new</a>
+<a class="nav-link btn btn-primary" href="/#!/index">new</a>
 
 <div class="col-sm-12">
     <h1 class="text-center">Invoices</h1>
@@ -22,6 +22,9 @@
             <td>
                 <button type="button" class="btn btn-primary" aria-label="Left Align" ng-click="editItem(i)">
                     <i class="fas fa-edit"></i>
+                </button>
+                <button type="button" class="btn btn-danger" aria-label="Left Align" ng-click="deleteInvoice(i)">
+                    <i class="fas fa-trash-alt"></i>
                 </button>
             </td>
         </tr>

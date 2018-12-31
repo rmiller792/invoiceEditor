@@ -66,10 +66,13 @@ class InvoicesController < ApplicationController
   # DELETE /invoices/1
   # DELETE /invoices/1.json
   def destroy
-    @invoice.destroy
-    respond_to do |format|
-      format.html { redirect_to invoices_url, notice: 'Invoice was successfully destroyed.' }
-      format.json { head :no_content }
+    ActiveRecord::Base.transaction do
+success = false
+      @invoice = Invoice.includes(:details).find_by_id(params[:id])
+      if @invoice.destroy
+success = true
+      end
+      render json: {success:success}
     end
   end
 
