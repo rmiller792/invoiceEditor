@@ -67,7 +67,7 @@ class ItemsController < ApplicationController
     items = []
     @items.each do |i|
       item = {}
-      item['id'] = i.id
+      item['itemId'] = i.id
       item['name'] = i.name
       item['price'] = i.price.to_f
       item['qty'] = 1

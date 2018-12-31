@@ -20,7 +20,6 @@ angular.module("rails", ["ngRoute"])
     $scope.items=[];
 
     $scope.details = [];
-    $scope.itemSelected = {};
     $scope.subTotal = 0;
     $scope.total = 0;
     $scope.tax = 0;
@@ -49,17 +48,13 @@ angular.module("rails", ["ngRoute"])
 
     }
 
-    $scope.itemSelected = function(item){
 
-        $scope.itemSelected = item;
-
-    }
     $scope.removeItem = function(item){
 
       if ($scope.details.length > 0) {
          for (var i = 0; i < $scope.details.length; i++) 
          {
-            if ($scope.details[i].id == item.id)
+            if ($scope.details[i].itemId == item.id)
             {
              $scope.details.splice(i, 1);
 
@@ -103,7 +98,7 @@ $scope.addItem = function(item){
     $scope.details.push(item);
 }else{
     for (var i = 0; i < $scope.details.length; i++) {
-        if ($scope.details[i].id == item.id){
+        if ($scope.details[i].itemId == item.itemId){
             $scope.details[i].qty ++;
             $scope.details[i].total = $scope.details[i].qty * $scope.details[i].price;
             found = true;
@@ -197,7 +192,7 @@ $scope.save = function(){
 };
 
 this.saveInvoice = function(params, callback, onError){
-  var fullUrl = baseUrl+'invoices/save';
+  var fullUrl = 'invoices/save';
   var asJson = angular.toJson(params);
   console.log(asJson);
   var req = {

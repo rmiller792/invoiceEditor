@@ -1,6 +1,6 @@
 class InvoicesController < ApplicationController
   # before_action :set_invoice, only: [:show, :edit, :update, :destroy]
-
+ skip_before_action :verify_authenticity_token, raise: false
   # GET /invoices
   # GET /invoices.json
   def index
@@ -24,21 +24,37 @@ class InvoicesController < ApplicationController
   # POST /invoices
   # POST /invoices.json
   def create
-    @invoice = Invoice.new(invoice_params)
-    array = params[:details]
+    ActiveRecord::Base.transaction do
 
-    details.each do ||
-      
-    end
+      @invoice = Invoice.new(invoice_params)
 
-    respond_to do |format|
+      details = params[:details]
       if @invoice.save
-        format.html { redirect_to @invoice, notice: 'Invoice was successfully created.' }
-        format.json { render :show, status: :created, location: @invoice }
-      else
-        format.html { render :new }
-        format.json { render json: @invoice.errors, status: :unprocessable_entity }
+        details.each do |d|
+          det = InvoiceDetail.new
+          det.itemId = d["itemId"]
+          det.invoice_id = @invoice.id
+          det.itemId = d["itemId"]
+          det.qty = d["qty"]
+          det.price = d["price"]
+          det.total = d["total"]
+
+          det.save
+
+        end
       end
+   render json: @invoice
+
+
+      # respond_to do |format|
+      #   if @invoice.valid?
+      #     format.html { redirect_to @invoice, notice: 'Invoice was successfully created.' }
+      #     format.json { render :show, status: :created, location: @invoice }
+      #   else
+      #     format.html { render :new }
+      #     format.json { render json: @invoice.errors, status: :unprocessable_entity }
+      #   end
+      # end
     end
   end
 
@@ -66,13 +82,13 @@ class InvoicesController < ApplicationController
     end
   end
 
-    def getAll
-     @invoices = Invoice.all
-     render json: @invoices
-     
-  end
+  def getAll
+   @invoices = Invoice.all
+   render json: @invoices
 
-  private
+ end
+
+ private
     # Use callbacks to share common setup or constraints between actions.
     def set_invoice
       @invoice = Invoice.find(params[:id])
@@ -82,4 +98,4 @@ class InvoicesController < ApplicationController
     def invoice_params
       params.require(:invoice).permit(:subtotal, :tax, :total)
     end
-end
+  end

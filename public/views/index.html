@@ -17,20 +17,18 @@
       <table class="table table-bordered table-responsive-md table-striped text-center">
         <thead>
             <tr>
-                <th width="100">Id</th>
+                <th width="200">Item</th>
                 <th width="200">Qty</th>
                 <th width="200">Price</th>
-                <th width="200">Item</th>
                 <th width="200">Total</th>
             </tr>
         </thead>
         <tbody>
 
             <tr ng-repeat="d in details" >
-                <td contenteditable="true">{{ d.id }}</td>
+                <td contenteditable="true">{{ d.name }}</td>
                 <td><input type="number" min="1" ng-model="d.qty" ng-change="calculateRow(d)"/></td>
                 <td><input type="number" min="1" ng-model="d.price" ng-change="calculateRow(d)"/></td>
-                <td contenteditable="true">{{ d.name }}</td>
                 <td contenteditable="true">{{ d.total }}</td>
                 <td>
                     <span class="table-remove"><button type="button" class="btn btn-danger btn-rounded btn-sm my-0" ng-click="removeItem(d)">Remove</button></span>
