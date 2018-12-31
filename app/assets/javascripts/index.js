@@ -14,7 +14,7 @@ angular.module("rails", ["ngRoute","ngDialog"])
     .otherwise({ reditrectTo : "/" });
 })
 
-.controller("indexCtrl", function($scope, services, ngDialog)
+.controller("indexCtrl", function($scope, services, ngDialog, $window)
 {
 
     $scope.items=[];
@@ -23,8 +23,8 @@ angular.module("rails", ["ngRoute","ngDialog"])
     $scope.subTotal = 0;
     $scope.total = 0;
     $scope.tax = 0;
-        var tax = 0.05;
-var dialog;
+    var tax = 0.05;
+    var dialog;
 
     var onError = function(data){
 
@@ -38,7 +38,31 @@ var dialog;
     };
 
     var onSave = function(data){
-        dialog.close();
+
+        if (data.invoice.id > 0) {
+            swal({   
+                title: "Was Successfully Added!",   
+              type: "success",   
+              showCancelButton: true,   
+              confirmButtonColor: "#DD6B55",   
+              confirmButtonText: "PDF",
+              cancelButtonText: "Close",   
+              closeOnConfirm: true 
+          }).then((isConfirm) => {
+              if (isConfirm) {
+
+
+                 window.open("invoices/print/"+
+                    data.invoice.id+".pdf",'_blank');
+
+             } 
+         });  
+
+        }else{
+            swal("Error", "Ocurrió un error al guardar.", "error");
+        }
+
+
     };
 
     services.getInvoices(onInvoicesLoaded, onError);
@@ -52,17 +76,17 @@ var dialog;
     $scope.removeItem = function(item){
 
       if ($scope.details.length > 0) {
-         for (var i = 0; i < $scope.details.length; i++) 
-         {
-            if ($scope.details[i].itemId == item.itemId)
-            {
-             $scope.details.splice(i, 1);
+       for (var i = 0; i < $scope.details.length; i++) 
+       {
+        if ($scope.details[i].itemId == item.itemId)
+        {
+           $scope.details.splice(i, 1);
 
-         }
+       }
 
-     }
- }
- calculateTotal();
+   }
+}
+calculateTotal();
 }
 
 
@@ -72,7 +96,7 @@ $scope.calculateRow = function(item){
 
 }
 
- var calculateTotal = function(){
+var calculateTotal = function(){
     $scope.subTotal = 0;
     $scope.total = 0;
 
@@ -86,15 +110,15 @@ $scope.calculateRow = function(item){
             $scope.subTotal +=  $scope.details[i].total;
 
         }
-       $scope.tax = $scope.subTotal * tax;
-       $scope.total = $scope.subTotal + $scope.tax;
+        $scope.tax = $scope.subTotal * tax;
+        $scope.total = $scope.subTotal + $scope.tax;
     }
 
 }
 
 $scope.addItem = function(item){
- var found = false;
- if ($scope.details.length == 0) {
+   var found = false;
+   if ($scope.details.length == 0) {
     item.total = item.price;
     $scope.details.push(item);
 }else{
@@ -113,30 +137,30 @@ $scope.addItem = function(item){
     }
 
 }
-    calculateTotal();
+calculateTotal();
 
 
 }
 
 $scope.save = function(){
     if ($scope.details == null || $scope.details.length == 0) {
-  swal("Error", "Add Item Please", "error");
+      swal("Error", "Add Item Please", "error");
 
-    }
-      var parametros = {
+  }
+  var parametros = {
     details: $scope.details,
     subTotal: $scope.subTotal,
     tax: $scope.tax,
     total: $scope.total,
-  }
-    dialog = ngDialog.open({
-    template: '<div class="loading">Waiting... <img src="../images/loader.gif"></div>',
-    plain: true,
-    showClose: false,
-    closeByEscape: false,
-    closeByDocument: false
-  });
-  services.saveInvoice(parametros, onSave, onError);
+}
+// dialog = ngDialog.open({
+//     template: '<div class="loading">Waiting... <img src="../images/loader.gif"></div>',
+//     plain: true,
+//     showClose: false,
+//     closeByEscape: false,
+//     closeByDocument: false
+// });
+services.saveInvoice(parametros, onSave, onError);
 
 }
 
@@ -182,8 +206,8 @@ $scope.save = function(){
         callback(response.data);
     }, function(error)
     {
-     alert(error.data);
- })
+       alert(error.data);
+   })
   };
 
   this.getItems = function(callback, onError){
@@ -199,7 +223,7 @@ $scope.save = function(){
     callback(response.data);
 }, function(error)
 {
- alert(error.data);
+   alert(error.data);
 })
 };
 
@@ -212,15 +236,15 @@ this.saveInvoice = function(params, callback, onError){
     url: fullUrl,
     headers: {
       'Content-Type': 'application/json'
-    },
-    data: asJson
-  };
-    $http(req).then(function(response) 
-  {
+  },
+  data: asJson
+};
+$http(req).then(function(response) 
+{
     callback(response.data);
 }, function(error)
 {
- alert(error.data);
+   alert(error.data);
 })
 };
 

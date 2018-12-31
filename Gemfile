@@ -36,6 +36,9 @@ gem 'jquery-rails'
 gem 'bootstrap', '~> 4.1.1'
 gem 'bootstrap-editable-rails'
 gem 'angularjs-rails'
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'
+gem 'wkhtmltopdf-binary-edge'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false

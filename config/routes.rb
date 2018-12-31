@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 	get 'invoices/getInvoices', to: 'invoices#getAll'
 	get 'invoices/create', to: 'invoices#create'
 	get 'items/getAll', to: 'items#getAll'
+	get 'invoices/print/:id', to: 'invoices#print'
 	post 'invoices/save', to: 'invoices#create'
 
 

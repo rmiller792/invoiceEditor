@@ -1,6 +1,6 @@
 class InvoicesController < ApplicationController
   # before_action :set_invoice, only: [:show, :edit, :update, :destroy]
- skip_before_action :verify_authenticity_token, raise: false
+  skip_before_action :verify_authenticity_token, raise: false
   # GET /invoices
   # GET /invoices.json
   def index
@@ -43,18 +43,9 @@ class InvoicesController < ApplicationController
 
         end
       end
-   render json: @invoice
 
+      render json:{invoice: @invoice}
 
-      # respond_to do |format|
-      #   if @invoice.valid?
-      #     format.html { redirect_to @invoice, notice: 'Invoice was successfully created.' }
-      #     format.json { render :show, status: :created, location: @invoice }
-      #   else
-      #     format.html { render :new }
-      #     format.json { render json: @invoice.errors, status: :unprocessable_entity }
-      #   end
-      # end
     end
   end
 
@@ -85,6 +76,22 @@ class InvoicesController < ApplicationController
   def getAll
    @invoices = Invoice.all
    render json: @invoices
+
+ end
+ def print
+   
+@invoice = Invoice.find_by_id(params[:id])
+
+      # render json: {estado_cuenta: @cuentas_ec, total_saldo:total_saldo, ultimaActualizacion: ultimaActualizacion.created_at}
+   
+    respond_to do |format|
+      format.pdf do
+        render pdf: "invoice", margin: {top: 0, left:0, right:0, bottom:0}, show_as_html: params.key?('debug'),
+        :page_size => 'Letter'
+      end
+      format.html
+    end  
+
 
  end
 
