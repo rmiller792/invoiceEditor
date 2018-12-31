@@ -21,6 +21,7 @@
 					</tr>
 				</thead>
 
+					<%unless  @invoice.nil?%>
 				<tr>
 					<%@invoice.details.each_with_index do |item,index|%>	
 					<td><%= Item.find_by_id(item.itemId).name %></td>						
@@ -48,6 +49,10 @@
 					<td style="border-bottom: 1px solid #000; font-weight: bold"><span class="pull-right">  Total:</span></td>
 					<td style="border-bottom: 1px solid #000"><span class="pull-right">  <%= number_to_currency(@invoice.total) %></span></td>
 				</tr>
+				<% else %>
+					No Data Found
+					
+				<% end %>
 
 			</table>
 		</div>
