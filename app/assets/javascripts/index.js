@@ -67,7 +67,8 @@ angular.module("rails", ["ngRoute","ngDialog"])
 
                  window.open("invoices/print/"+
                     data.invoice.id+".pdf",'_blank');
-                 $scope.invoice_id = data.invoice.id;
+
+                    window.location.reload();
 
              } 
          });  
