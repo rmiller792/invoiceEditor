@@ -2,16 +2,55 @@
 <html>
 <head>
 	<title>Invoice</title>
-
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 </head>
 <body>
-<%if @invoice.id != nil?%>
-		
+	<div class="container">
 
-		
-		
+		<h1>Invoice</h1>
+		<div class="col-sm-12">
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th>Item</th>
+						<th>Qty</th>
+						<th>Price</th>
+						<th>Total</th>
 
-		
-		<%end%>
+					</tr>
+				</thead>
+
+				<tr>
+					<%@invoice.details.each_with_index do |item,index|%>	
+					<td><%= Item.find_by_id(item.itemId).name %></td>						
+					<td><%= item.qty %></td>						
+					<td><span class="pull-right">  <%= number_to_currency(item.price) %></span></td>
+					<td><span class="pull-right">  <%= number_to_currency(item.total) %></span></td>
+
+				</tr>
+				<% end %>
+				<tr >
+					<td></td>
+					<td></td>
+					<td style="border-top: 1px solid #000;font-weight: bold"><span class="pull-right">  SubTotal:</span></td>
+					<td style="border-top: 1px solid #000"><span class="pull-right">  <%= number_to_currency(@invoice.subtotal) %></span></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td style="font-weight: bold"><span class="pull-right">  Tax(5%):</span></td>
+					<td><span class="pull-right">  <%= number_to_currency( @invoice.tax) %></span></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td style="border-bottom: 1px solid #000; font-weight: bold"><span class="pull-right">  Total:</span></td>
+					<td style="border-bottom: 1px solid #000"><span class="pull-right">  <%= number_to_currency(@invoice.total) %></span></td>
+				</tr>
+
+			</table>
+		</div>
+	</div>
 </body>
 </html>

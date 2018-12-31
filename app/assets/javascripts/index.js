@@ -20,7 +20,7 @@ angular.module("rails", ["ngRoute","ngDialog"])
     $scope.items=[];
 
     $scope.details = [];
-    $scope.subTotal = 0;
+    $scope.subtotal = 0;
     $scope.total = 0;
     $scope.tax = 0;
     var tax = 0.05;
@@ -97,21 +97,21 @@ $scope.calculateRow = function(item){
 }
 
 var calculateTotal = function(){
-    $scope.subTotal = 0;
+    $scope.subtotal = 0;
     $scope.total = 0;
 
     var found = false;
     if ($scope.details.length == 0) {
-        $scope.subTotal = 0;
+        $scope.subtotal = 0;
         $scope.total = 0;
         $scope.tax = 0;
     }else{
         for (var i = 0; i < $scope.details.length; i++) {
-            $scope.subTotal +=  $scope.details[i].total;
+            $scope.subtotal +=  $scope.details[i].total;
 
         }
-        $scope.tax = $scope.subTotal * tax;
-        $scope.total = $scope.subTotal + $scope.tax;
+        $scope.tax = $scope.subtotal * tax;
+        $scope.total = $scope.subtotal + $scope.tax;
     }
 
 }
@@ -149,7 +149,7 @@ $scope.save = function(){
   }
   var parametros = {
     details: $scope.details,
-    subTotal: $scope.subTotal,
+    subtotal: $scope.subtotal,
     tax: $scope.tax,
     total: $scope.total,
 }

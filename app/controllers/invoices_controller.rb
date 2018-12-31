@@ -74,28 +74,27 @@ class InvoicesController < ApplicationController
   end
 
   def getAll
-   @invoices = Invoice.all
+   @invoices = Invoice.includes(:details).all
    render json: @invoices
 
  end
  def print
-   
-@invoice = Invoice.find_by_id(params[:id])
 
-      # render json: {estado_cuenta: @cuentas_ec, total_saldo:total_saldo, ultimaActualizacion: ultimaActualizacion.created_at}
-   
-    respond_to do |format|
-      format.pdf do
-        render pdf: "invoice", margin: {top: 0, left:0, right:0, bottom:0}, show_as_html: params.key?('debug'),
-        :page_size => 'Letter'
-      end
-      format.html
-    end  
+  @invoice = Invoice.includes(:details).find_by_id(params[:id])
 
 
- end
+  respond_to do |format|
+    format.pdf do
+      render pdf: "invoice", margin: {top: 20, left:10, right:10, bottom:10}, show_as_html: params.key?('debug'),
+      :page_size => 'Letter'
+    end
+    format.html
+  end  
 
- private
+
+end
+
+private
     # Use callbacks to share common setup or constraints between actions.
     def set_invoice
       @invoice = Invoice.find(params[:id])
